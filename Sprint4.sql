@@ -1,4 +1,4 @@
--- Nivel 1: Dissenya una base de dades amb un esquema d'estrella:
+-- Nivel 1: Diseña una base de datos con un esquema de estrella:
  
 CREATE DATABASE IF NOT EXISTS orders -- Creo la base de datos
 DEFAULT CHARACTER SET = 'utf8mb4' DEFAULT COLLATE 'utf8mb4_general_ci'; 
