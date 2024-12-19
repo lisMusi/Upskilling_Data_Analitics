@@ -229,7 +229,6 @@ GROUP BY 1; -- uso un condicional para obtener las tarjetas activas o inactivas 
 
 SELECT * FROM orders.card_status; -- visualizo mi nueva tabla
 
-
 -- Ahora creo la PK y la FK con la que la relacionaré:
 ALTER TABLE card_status
 ADD PRIMARY KEY (credit_card_id);
