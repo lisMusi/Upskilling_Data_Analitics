@@ -229,12 +229,13 @@ GROUP BY 1; -- uso un condicional para obtener las tarjetas activas o inactivas 
 
 SELECT * FROM orders.card_status; -- visualizo mi nueva tabla
 
+
 -- Ahora creo la PK y la FK con la que la relacionaré:
 ALTER TABLE card_status
 ADD PRIMARY KEY (credit_card_id);
 
-ALTER TABLE transaction
-ADD FOREIGN KEY (credit_card_id) REFERENCES card_status(credit_card_id);
+ALTER TABLE credit_cards
+ADD FOREIGN KEY (id) REFERENCES card_status(credit_card_id);
 
 -- Nivel 2:
 -- Ejercicio 1: ¿Cuántas tarjetas están activas?
