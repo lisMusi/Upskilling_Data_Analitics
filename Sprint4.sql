@@ -182,12 +182,14 @@ ADD FOREIGN KEY (user_id) REFERENCES users(id);
 -- Nivel 1:
 -- Ejercicio 1: Realiza una subconsulta que muestre todos los usuarios con más de 30 transacciones
 
-SELECT u.name AS nombre_usuario, u.surname AS apellido_usuario, COUNT(t.id) AS transacciones
-FROM users AS u
-JOIN transaction AS t
-ON u.id = t.user_id
-GROUP BY 1, 2
-HAVING transacciones > 30;
+SELECT u.name AS nombre_usuario, u.surname AS apellido_usuario, (SELECT COUNT(t.id) 
+																	FROM transaction AS t 
+																	WHERE t.user_id = u.id) AS transacciones
+FROM users As u
+WHERE u.id IN (SELECT t.user_id 
+				FROM transaction AS t
+                GROUP BY 1
+				HAVING COUNT(t.id) > 30);
 
 -- Nivel 1:
 -- Ejercicio 2: Media del 'amount' por IBAN de las targetas de crédito en la compañía Donec Ltd
@@ -228,6 +230,7 @@ WHERE transaccion <= 3 -- con este where obtengo las 3 ultimas transacciones (de
 GROUP BY 1; -- uso un condicional para obtener las tarjetas activas o inactivas segun las ultimas 3 transacciones declinadas
 
 SELECT * FROM orders.card_status; -- visualizo mi nueva tabla
+
 
 -- Ahora creo la PK y la FK con la que la relacionaré:
 ALTER TABLE card_status
