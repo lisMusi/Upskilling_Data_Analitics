@@ -183,13 +183,13 @@ ADD FOREIGN KEY (user_id) REFERENCES users(id);
 -- Ejercicio 1: Realiza una subconsulta que muestre todos los usuarios con más de 30 transacciones
 
 SELECT u.name AS nombre_usuario, u.surname AS apellido_usuario, (SELECT COUNT(t.id) 
-																	FROM transaction AS t 
-																	WHERE t.user_id = u.id) AS transacciones
+								 FROM transaction AS t 
+								 WHERE t.user_id = u.id) AS transacciones
 FROM users As u
 WHERE u.id IN (SELECT t.user_id 
-				FROM transaction AS t
+		FROM transaction AS t
                 GROUP BY 1
-				HAVING COUNT(t.id) > 30);
+		HAVING COUNT(t.id) > 30);
 
 -- Nivel 1:
 -- Ejercicio 2: Media del 'amount' por IBAN de las targetas de crédito en la compañía Donec Ltd
@@ -200,7 +200,7 @@ JOIN transaction AS t
 JOIN companies AS c
 WHERE cc.id = t.credit_card_id
 AND t.company_id IN (SELECT c.id
-						FROM companies
+			FROM companies
                         WHERE c.company_name = 'Donec Ltd')
 GROUP BY 1, 2;
 
@@ -214,7 +214,7 @@ GROUP BY 1; -- Ninguna tarjeta ha sido declinada más de una vez
 -- Primero creo una tabla temporal:
 CREATE TEMPORARY TABLE IF NOT EXISTS status_card AS (SELECT credit_card_id, timestamp, SUM(declined) AS total_declinadas, 
 			ROW_NUMBER() OVER (PARTITION BY credit_card_id  -- uso la función row_number() para contar el numero de transacciones por tarjeta
-								ORDER BY timestamp DESC) AS transaccion -- y lo ordeno por fecha descendiente para que las ultimas sean las primeras
+			ORDER BY timestamp DESC) AS transaccion -- y lo ordeno por fecha descendiente para que las ultimas sean las primeras
 	FROM transaction
 	GROUP BY 1, 2); -- pero salen todas y solo quiero las 3 ultimas por compañia
 
@@ -223,7 +223,7 @@ CREATE TABLE card_status AS -- Tabla 5
 SELECT credit_card_id,
 	CASE -- uso un condicional para obtener las tarjetas activas o inactivas segun las ultimas 3 transacciones declinadas
 		WHEN SUM(total_declinadas) >= 3 THEN 'inactive'
-        ELSE 'active'
+        	ELSE 'active'
 	END AS status
 FROM status_card
 WHERE transaccion <= 3 -- con este where obtengo las 3 ultimas transacciones (declinadas o no) por tarjeta
